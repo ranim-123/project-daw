@@ -78,9 +78,20 @@ function updateCartDisplay() {
     if (Object.keys(cartItems).length > 0) {
         // إذا في منتجات بالسلة، نبني الـ HTML الخاص بها
         Object.values(cartItems).forEach((item) => {
+            // Fix image path based on current location
+            let imagePath = item.imagePic;
+            // Check if we're in a subdirectory
+            const path = window.location.pathname;
+            if (path.includes('/women/') || path.includes('/men/') || path.includes('/children/')) {
+                // If image path doesn't already have ../ prefix, add it
+                if (!imagePath.startsWith('../')) {
+                    imagePath = '../' + imagePath;
+                }
+            }
+            
             htmlDom += `
                 <div class="cart-box" data-id="${item.id}">
-                    <img src="${item.imagePic}" alt="the photo don't found">
+                    <img src="${imagePath}" alt="the photo don't found">
                     <div class="cart-detail">
                         <h2 class="cart-product-title">${item.itemName}</h2>
                         <span class="cart-price">$${item.price}</span>
@@ -123,13 +134,18 @@ function updateCartDisplay() {
 // عند الضغط على زر الشراء:
 document.querySelector(".btn-buy").addEventListener("click", () => {
     if (cartTotal !== 0) {
-        // إذا كانت السلة غير فارغة، ننتقل لصفحة الدفع
-        window.location.href = "file:///C:/Users/dell/Desktop/html-css-cours/project-daw.html/pay-page.html";
+        // Check if we're in a subdirectory
+        const path = window.location.pathname;
+        if (path.includes('/men/') || path.includes('/women/') || path.includes('/children/')) {
+            window.location.href = "../pay-page.html";
+        } else {
+            window.location.href = "pay-page.html";
+        }
     } else {
         // إذا كانت السلة فارغة، نعرض رسالة خطأ
-        document.querySelector(".error-cart").innerHTML = "You must have at least one item in the cart to continue in the purshase process";
+        document.querySelector(".error-cart").innerHTML = "You must have at least one item in the cart to continue in the purchase process";
     }
-})
+});
 
 // هذه الدالة تضيف مستمعات الأحداث لعناصر السلة (أزرار + و - وحذف)
 function setupCartItemEventListeners() {
