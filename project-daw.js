@@ -78,20 +78,9 @@ function updateCartDisplay() {
     if (Object.keys(cartItems).length > 0) {
         // إذا في منتجات بالسلة، نبني الـ HTML الخاص بها
         Object.values(cartItems).forEach((item) => {
-            // Fix image path based on current location
-            let imagePath = item.imagePic;
-            // Check if we're in a subdirectory
-            const path = window.location.pathname;
-            if (path.includes('/women/') || path.includes('/men/') || path.includes('/children/')) {
-                // If image path doesn't already have ../ prefix, add it
-                if (!imagePath.startsWith('../')) {
-                    imagePath = '../' + imagePath;
-                }
-            }
-            
             htmlDom += `
                 <div class="cart-box" data-id="${item.id}">
-                    <img src="${imagePath}" alt="the photo don't found">
+                    <img src="${item.imagePic}" alt="the photo don't found">
                     <div class="cart-detail">
                         <h2 class="cart-product-title">${item.itemName}</h2>
                         <span class="cart-price">$${item.price}</span>
@@ -132,20 +121,59 @@ function updateCartDisplay() {
 }
 
 // عند الضغط على زر الشراء:
-document.querySelector(".btn-buy").addEventListener("click", () => {
-    if (cartTotal !== 0) {
-        // Check if we're in a subdirectory
-        const path = window.location.pathname;
-        if (path.includes('/men/') || path.includes('/women/') || path.includes('/children/')) {
-            window.location.href = "../pay-page.html";
-        } else {
-            window.location.href = "pay-page.html";
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    const buyButton = document.querySelector(".btn-buy");
+    
+    if (buyButton) {
+        buyButton.addEventListener("click", () => {
+            if (cartTotal !== 0) {
+                // Check if we're in a subdirectory
+                const path = window.location.pathname;
+                if (path.includes('/men/') || path.includes('/women/') || path.includes('/children/')) {
+                    window.location.href = "../pay-page.html";
+                } else {
+                    window.location.href = "pay-page.html";
+                }
+                console.log("Redirecting to payment page"); // Debug log
+            } else {
+                // إذا كانت السلة فارغة، نعرض رسالة خطأ
+                const errorElement = document.querySelector(".error-cart");
+                if (errorElement) {
+                    errorElement.innerHTML = "You must have at least one item in the cart to continue in the purchase process";
+                }
+                console.log("Cart is empty, showing error"); // Debug log
+            }
+        });
     } else {
-        // إذا كانت السلة فارغة، نعرض رسالة خطأ
-        document.querySelector(".error-cart").innerHTML = "You must have at least one item in the cart to continue in the purchase process";
+        console.error("Buy button not found");
     }
-});
+}); // Add this function to create and show the notification
+function showNotification(message) {
+    // Remove any existing notification
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // Create new notification
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Show the notification
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    // Hide and remove after 3 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 200);
+    }, 2000);
+}
 
 // هذه الدالة تضيف مستمعات الأحداث لعناصر السلة (أزرار + و - وحذف)
 function setupCartItemEventListeners() {
@@ -216,30 +244,3 @@ function showNotification(message) {
     }, 2000);
 }
 
-// Remove the admin password prompt code
-// The following code block has been removed:
-/*
-document.addEventListener('DOMContentLoaded', function() {
-    // Find all admin links
-    const adminLinks = document.querySelectorAll('.nav-icons a[href*="admin.html"]');
-    
-    // Add click event to each admin link
-    adminLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default navigation
-            
-            // Prompt for password
-            const password = prompt("Please enter admin password:");
-            
-            // Check if password is correct (for example, "admin123")
-            if (password === "admin123") {
-                // If correct, navigate to admin page
-                window.location.href = this.getAttribute('href');
-            } else if (password !== null) { // If user entered something but it's wrong
-                alert("Incorrect password. Access denied.");
-            }
-            // If user clicked cancel on prompt, do nothing
-        });
-    });
-});
-});
