@@ -47,34 +47,6 @@ addCartButtons.forEach((button, index) => {
     });
 });
 
-// Add this function to create and show the notification
-function showNotification(message) {
-    // Remove any existing notification
-    const existingNotification = document.querySelector('.notification');
-    if (existingNotification) {
-        existingNotification.remove();
-    }
-    
-    // Create new notification
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    
-    // Show the notification
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 10);
-    
-    // Hide and remove after 3 seconds
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
-    }, 3000);
-}
-
 // هذه الدالة تضيف المنتج إلى السلة أو تزيد الكمية إذا كان مضاف مسبق
 const handleClick = (itemId) => {
     if (cartItems[itemId]) {
@@ -199,4 +171,32 @@ function setupCartItemEventListeners() {
 
 // استدعاء أولي لتحديث عرض السلة عند تحميل الصفحة
 updateCartDisplay();
+
+// Add this function to create and show the notification
+function showNotification(message) {
+    // Remove any existing notification
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // Create new notification
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Show the notification
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    // Hide and remove after 3 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 200);
+    }, 2000);
+}
 
