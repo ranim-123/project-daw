@@ -216,3 +216,30 @@ function showNotification(message) {
     }, 2000);
 }
 
+// Remove the admin password prompt code
+// The following code block has been removed:
+/*
+document.addEventListener('DOMContentLoaded', function() {
+    // Find all admin links
+    const adminLinks = document.querySelectorAll('.nav-icons a[href*="admin.html"]');
+    
+    // Add click event to each admin link
+    adminLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default navigation
+            
+            // Prompt for password
+            const password = prompt("Please enter admin password:");
+            
+            // Check if password is correct (for example, "admin123")
+            if (password === "admin123") {
+                // If correct, navigate to admin page
+                window.location.href = this.getAttribute('href');
+            } else if (password !== null) { // If user entered something but it's wrong
+                alert("Incorrect password. Access denied.");
+            }
+            // If user clicked cancel on prompt, do nothing
+        });
+    });
+});
+});
