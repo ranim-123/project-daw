@@ -90,4 +90,132 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Logged out');
         }
     });
+
+    // Section navigation
+    document.querySelectorAll('.sidebar-menu li a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Update active menu item
+            document.querySelectorAll('.sidebar-menu li').forEach(item => {
+                item.classList.remove('active');
+            });
+            this.parentElement.classList.add('active');
+            
+            // Show the corresponding section
+            const targetSection = this.getAttribute('data-section');
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(targetSection).classList.add('active');
+        });
+    });
+
+    // Product management
+    if (document.querySelector('.products-table')) {
+        // Edit product
+        document.querySelectorAll('.products-table .btn-action.edit').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const productId = row.querySelector('td:first-child').textContent;
+                alert(`Edit product ${productId}`);
+                // Here you would open a modal with a form to edit the product
+            });
+        });
+        
+        // Delete product
+        document.querySelectorAll('.products-table .btn-action.delete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const productId = row.querySelector('td:first-child').textContent;
+                if (confirm(`Are you sure you want to delete product ${productId}?`)) {
+                    row.remove();
+                    // Here you would send an API request to delete the product
+                }
+            });
+        });
+        
+        // Add new product
+        document.querySelector('.btn-add').addEventListener('click', function() {
+            alert('Add new product');
+            // Here you would open a modal with a form to add a new product
+        });
+        
+        // Filter products
+        document.querySelector('#category-filter').addEventListener('change', filterProducts);
+        document.querySelector('#status-filter').addEventListener('change', filterProducts);
+        
+        function filterProducts() {
+            const categoryFilter = document.querySelector('#category-filter').value.toLowerCase();
+            const statusFilter = document.querySelector('#status-filter').value.toLowerCase();
+            
+            document.querySelectorAll('.products-table tbody tr').forEach(row => {
+                const category = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                const status = row.querySelector('.status').textContent.toLowerCase();
+                
+                const categoryMatch = !categoryFilter || category.includes(categoryFilter);
+                const statusMatch = !statusFilter || status.includes(statusFilter);
+                
+                if (categoryMatch && statusMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    }
+    
+    // Order management
+    if (document.querySelector('.orders-table')) {
+        // View order details
+        document.querySelectorAll('.orders-table .btn-action.view').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const orderId = row.querySelector('td:first-child').textContent;
+                alert(`View order details for ${orderId}`);
+                // Here you would open a modal with order details
+            });
+        });
+        
+        // Print order
+        document.querySelectorAll('.orders-table .btn-action.print').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const orderId = row.querySelector('td:first-child').textContent;
+                alert(`Print order ${orderId}`);
+                // Here you would trigger the print function
+            });
+        });
+        
+        // Cancel order
+        document.querySelectorAll('.orders-table .btn-action.cancel').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const orderId = row.querySelector('td:first-child').textContent;
+                if (confirm(`Are you sure you want to cancel order ${orderId}?`)) {
+                    row.remove();
+                    // Here you would send an API request to cancel the order
+                }
+            });
+        });
+        
+        // Filter orders
+        document.querySelector('#order-status-filter').addEventListener('change', filterOrders);
+        
+        function filterOrders() {
+            const statusFilter = document.querySelector('#order-status-filter').value.toLowerCase();
+            
+            document.querySelectorAll('.orders-table tbody tr').forEach(row => {
+                const status = row.querySelector('.status').textContent.toLowerCase();
+                
+                const statusMatch = !statusFilter || status.includes(statusFilter);
+                
+                if (statusMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    }
 });

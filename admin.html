@@ -15,13 +15,13 @@
                 <h2>Admin Panel</h2>
             </div>
             <ul class="sidebar-menu">
-                <li class="active"><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="#"><i class="fas fa-users"></i> Users</a></li>
-                <li><a href="#"><i class="fas fa-box"></i> Products</a></li>
-                <li><a href="#"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-                <li><a href="#"><i class="fas fa-chart-bar"></i> Analytics</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
-                <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
+                <li class="active"><a href="#dashboard-section" data-section="dashboard-section"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#users-section" data-section="users-section"><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="#products-section" data-section="products-section"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="#orders-section" data-section="orders-section"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                <li><a href="#analytics-section" data-section="analytics-section"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                <li><a href="#settings-section" data-section="settings-section"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#help-section" data-section="help-section"><i class="fas fa-question-circle"></i> Help</a></li>
             </ul>
             <div class="sidebar-footer">
                 <a href="#" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -42,14 +42,14 @@
                         <span class="notification-count">3</span>
                     </div>
                     <div class="user-profile">
-                        <img style="position: relative; bottom:3px;" src="image-daw/daw-project-logo2-removebg-preview.png" alt="User">
+                       <a href="main.html"><img style="position: relative; bottom:3px;" src="image-daw/daw-project-logo2-removebg-preview.png" alt="User"></a>
                         <span>Admin User</span>
                     </div>
                 </div>
             </nav>
 
             <!-- Dashboard Content -->
-            <div class="content-wrapper">
+            <div id="dashboard-section" class="content-section active">
                 <h1 class="page-title">Dashboard</h1>
                 
                 <!-- Stats Cards -->
@@ -170,6 +170,222 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Products Section -->
+            <div id="products-section" class="content-section">
+                <h1 class="page-title">Products Management</h1>
+                
+                <div class="action-bar">
+                    <button class="btn-add"><i class="fas fa-plus"></i> Add New Product</button>
+                    <div class="filter-options">
+                        <select id="category-filter">
+                            <option value="">All Categories</option>
+                            <option value="shoes">Shoes</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="accessories">Accessories</option>
+                        </select>
+                        <select id="status-filter">
+                            <option value="">All Status</option>
+                            <option value="in-stock">In Stock</option>
+                            <option value="low-stock">Low Stock</option>
+                            <option value="out-of-stock">Out of Stock</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table products-table">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#PRD-001</td>
+                                <td><img src="image-daw/shoes5.png" alt="Product" class="product-thumbnail"></td>
+                                <td>Air Huarache RUN</td>
+                                <td>Shoes</td>
+                                <td>$99.99</td>
+                                <td>45</td>
+                                <td><span class="status completed">In Stock</span></td>
+                                <td>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#PRD-002</td>
+                                <td><img src="image-daw/shoes3.png" alt="Product" class="product-thumbnail"></td>
+                                <td>NIKE AIR ZOOM</td>
+                                <td>Shoes</td>
+                                <td>$149.99</td>
+                                <td>28</td>
+                                <td><span class="status completed">In Stock</span></td>
+                                <td>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#PRD-003</td>
+                                <td><img src="image-daw/shoes6.png" alt="Product" class="product-thumbnail"></td>
+                                <td>NIKE FREE RUNNING</td>
+                                <td>Shoes</td>
+                                <td>$74.99</td>
+                                <td>12</td>
+                                <td><span class="status pending">Low Stock</span></td>
+                                <td>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#PRD-004</td>
+                                <td><img src="image-daw/t-shirt1-removebg-preview.png" alt="Product" class="product-thumbnail"></td>
+                                <td>T-shirt Slim</td>
+                                <td>Clothing</td>
+                                <td>$14.99</td>
+                                <td>0</td>
+                                <td><span class="status cancelled">Out of Stock</span></td>
+                                <td>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#PRD-005</td>
+                                <td><img src="image-daw/t-shirt2-removebg-preview.png" alt="Product" class="product-thumbnail"></td>
+                                <td>Black Slim T-shirt</td>
+                                <td>Clothing</td>
+                                <td>$15.99</td>
+                                <td>32</td>
+                                <td><span class="status completed">In Stock</span></td>
+                                <td>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div id="orders-section" class="content-section">
+                <h1 class="page-title">Orders Management</h1>
+                
+                <div class="action-bar">
+                    <div class="filter-options">
+                        <select id="order-status-filter">
+                            <option value="">All Status</option>
+                            <option value="completed">Completed</option>
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <div class="date-filter">
+                            <label>From:</label>
+                            <input type="date" id="date-from">
+                            <label>To:</label>
+                            <input type="date" id="date-to">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Products</th>
+                                <th>Amount</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#ORD-001</td>
+                                <td>Amir Abada</td>
+                                <td>2023-06-15</td>
+                                <td>3 items</td>
+                                <td>$125.00</td>
+                                <td>Credit Card</td>
+                                <td><span class="status completed">Completed</span></td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action print"><i class="fas fa-print"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-002</td>
+                                <td>Ranim Taieb</td>
+                                <td>2023-06-14</td>
+                                <td>1 item</td>
+                                <td>$89.50</td>
+                                <td>PayPal</td>
+                                <td><span class="status pending">Pending</span></td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action print"><i class="fas fa-print"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-003</td>
+                                <td>Aymen Zebiri</td>
+                                <td>2023-06-13</td>
+                                <td>4 items</td>
+                                <td>$245.75</td>
+                                <td>Credit Card</td>
+                                <td><span class="status processing">Processing</span></td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action print"><i class="fas fa-print"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-004</td>
+                                <td>Aymen Merabta</td>
+                                <td>2023-06-12</td>
+                                <td>1 item</td>
+                                <td>$67.30</td>
+                                <td>PayPal</td>
+                                <td><span class="status cancelled">Cancelled</span></td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action print"><i class="fas fa-print"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-005</td>
+                                <td>Charaf Zarouki</td>
+                                <td>2023-06-11</td>
+                                <td>2 items</td>
+                                <td>$189.00</td>
+                                <td>Credit Card</td>
+                                <td><span class="status completed">Completed</span></td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action print"><i class="fas fa-print"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Other sections (users, analytics, settings, help) can be added similarly -->
         </main>
     </div>
 
