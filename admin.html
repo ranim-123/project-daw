@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Control Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active"><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="#"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="#"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                <li><a href="#"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="#" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <nav class="top-nav">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="user-info">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://via.placeholder.com/40" alt="User">
+                        <span>Admin User</span>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Dashboard Content -->
+            <div class="content-wrapper">
+                <h1 class="page-title">Dashboard</h1>
+                
+                <!-- Stats Cards -->
+                <div class="stats-cards">
+                    <div class="card">
+                        <div class="card-icon bg-blue">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3>1,254</h3>
+                            <p>Total Users</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon bg-green">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3>524</h3>
+                            <p>Total Orders</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon bg-orange">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3>89</h3>
+                            <p>Products</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon bg-red">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3>$12,548</h3>
+                            <p>Revenue</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and Tables -->
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="chart-container">
+                            <h3>Sales Overview</h3>
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="chart-container">
+                            <h3>Traffic Sources</h3>
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-container">
+                            <h3>Recent Orders</h3>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#ORD-001</td>
+                                        <td>amir abada</td>
+                                        <td>2023-06-15</td>
+                                        <td>$125.00</td>
+                                        <td><span class="status completed">Completed</span></td>
+                                        <td><button class="btn-view">View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-002</td>
+                                        <td>ranim taieb</td>
+                                        <td>2023-06-14</td>
+                                        <td>$89.50</td>
+                                        <td><span class="status pending">Pending</span></td>
+                                        <td><button class="btn-view">View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-003</td>
+                                        <td>aymen zebiri</td>
+                                        <td>2023-06-13</td>
+                                        <td>$245.75</td>
+                                        <td><span class="status processing">Processing</span></td>
+                                        <td><button class="btn-view">View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-004</td>
+                                        <td>aymen merabta</td>
+                                        <td>2023-06-12</td>
+                                        <td>$67.30</td>
+                                        <td><span class="status cancelled">Cancelled</span></td>
+                                        <td><button class="btn-view">View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-005</td>
+                                        <td>charaf zarouki</td>
+                                        <td>2023-06-11</td>
+                                        <td>$189.00</td>
+                                        <td><span class="status completed">Completed</span></td>
+                                        <td><button class="btn-view">View</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
