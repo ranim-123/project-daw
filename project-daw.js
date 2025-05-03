@@ -47,16 +47,46 @@ addCartButtons.forEach((button, index) => {
     });
 });
 
-// هذه الدالة تضيف المنتج إلى السلة أو تزيد الكمية إذا كان مضاف مسبقاً
+// Add this function to create and show the notification
+function showNotification(message) {
+    // Remove any existing notification
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // Create new notification
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Show the notification
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    // Hide and remove after 3 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
+}
+
+// هذه الدالة تضيف المنتج إلى السلة أو تزيد الكمية إذا كان مضاف مسبق
 const handleClick = (itemId) => {
     if (cartItems[itemId]) {
-        // إذا كان موجود، نزيد الكمية
+        // If already in cart, increase quantity
         cartItems[itemId].quantity += 1;
+        showNotification(`Added another ${cartItems[itemId].itemName} to cart!`);
     } else {
-        // إذا مش موجود، نبحث عن المنتج في items ونضيفه للسلة
+        // If not in cart, add it
         const foundItem = items.find((item) => item.id === itemId);
         if (foundItem) {
             cartItems[itemId] = { ...foundItem, quantity: 1 };
+            showNotification(`${foundItem.itemName} added to cart!`);
         }
     }
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
