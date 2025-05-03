@@ -78,9 +78,27 @@ function updateCartDisplay() {
     if (Object.keys(cartItems).length > 0) {
         // إذا في منتجات بالسلة، نبني الـ HTML الخاص بها
         Object.values(cartItems).forEach((item) => {
+            // Fix image path based on current location
+            let imagePath = item.imagePic;
+            
+            // Check if we're in a subdirectory
+            const path = window.location.pathname;
+            if (path.includes('/men/') || path.includes('/women/') || path.includes('/children/')) {
+                // If image path doesn't already have ../ prefix, add it
+                if (!imagePath.startsWith('../')) {
+                    imagePath = '../' + imagePath;
+                }
+            }
+            
+            // Handle relative paths for images
+            if (imagePath.includes('image-daw/') && !imagePath.includes('../image-daw/') && 
+                (path.includes('/men/') || path.includes('/women/') || path.includes('/children/'))) {
+                imagePath = imagePath.replace('image-daw/', '../image-daw/');
+            }
+            
             htmlDom += `
                 <div class="cart-box" data-id="${item.id}">
-                    <img src="${item.imagePic}" alt="the photo don't found">
+                    <img src="${imagePath}" alt="Product image">
                     <div class="cart-detail">
                         <h2 class="cart-product-title">${item.itemName}</h2>
                         <span class="cart-price">$${item.price}</span>
@@ -99,13 +117,19 @@ function updateCartDisplay() {
         cartLength = Object.values(cartItems)
             .map((item) => item.quantity)
             .reduce((a, b) => a + b, 0);
-        document.querySelector(".error-cart").innerHTML = "";
+        
+        const errorElement = document.querySelector(".error-cart");
+        if (errorElement) {
+            errorElement.innerHTML = "";
+        }
     } else {
         cartLength = 0;
     }
 
     // عرض عدد العناصر بجانب أيقونة السلة
-    cartItemsLengthSpan.innerHTML = cartLength;
+    if (cartItemsLengthSpan) {
+        cartItemsLengthSpan.innerHTML = cartLength;
+    }
 
     // تحديث واجهة عرض السلة بالمحتوى الجديد
     const cartContent = document.querySelector(".cart-content");
@@ -117,7 +141,9 @@ function updateCartDisplay() {
     // تحديث السعر الإجمالي
     handleUpdateTotalCart();
     const cartTotalElement = document.querySelector(".total-price");
-    cartTotalElement.innerHTML = `$${cartTotal}`;
+    if (cartTotalElement) {
+        cartTotalElement.innerHTML = `$${cartTotal}`;
+    }
 }
 
 // عند الضغط على زر الشراء:
