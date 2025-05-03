@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body>
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+    <% for( let index = 0; index < mascots.length; index++ ) { %>
+        <h1><%= mascots[index].name %></h1>
+    <% } %>
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+</body>
+</html>
