@@ -314,14 +314,15 @@ a {
     max-width: 100%;
     padding: 0 0.75rem;
 }
-
-/* Chart Containers */
 .chart-container {
     background-color: #fff;
     border-radius: 0.35rem;
     box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
     padding: 1.25rem;
     margin-bottom: 1.5rem;
+    /* --- Optional: Add this if charts might overflow --- */
+    overflow-x: auto;
+    /* --- End Optional --- */
 }
 
 .chart-container h3 {

@@ -90,17 +90,17 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.notifications').addEventListener('click', function() {
         alert('You have new notifications');
     });
+// Simple logout
+document.querySelector('.logout-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    if(confirm('Logout?')) { // Asks for confirmation
+        // Clear login state (optional, depends if main.html uses this flag)
+        localStorage.removeItem('adminLoggedIn');
 
-    // Simple logout
-    document.querySelector('.logout-btn').addEventListener('click', function(e) {
-        e.preventDefault();
-        if(confirm('Logout?')) {
-            // Clear login state
-            localStorage.removeItem('adminLoggedIn');
-            // Redirect to login page
-            window.location.href = 'login.html';
-        }
-    });
+        // Redirect to MAIN page  <--- CHANGED HERE
+        window.location.href = 'main.html';
+    }
+});
 
     // Section navigation
     document.querySelectorAll('.sidebar-menu li a').forEach(link => {
