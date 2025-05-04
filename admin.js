@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new Chart(salesCtx, {
         type: 'line',
         data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
             datasets: [{
                 label: 'Sales',
                 data: [12000, 19000, 15000, 22000, 20000, 25000],

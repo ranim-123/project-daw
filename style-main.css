@@ -390,11 +390,14 @@ padding: 20px ;
     justify-content: center;
     align-items: center;
     gap: 1.5rem;
-    border: solid 2px #b7b5d1;
-    border-radius: 0.5rem;
+    border: 1px solid rgba(183, 181, 209, 0.5); /* Changed from solid 2px #b7b5d1 to a thinner, semi-transparent border */
+    border-radius: 10px; /* Changed from 0.5rem */
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
-   
-    
+    position: relative;
+}
+
+.product-card:hover {
+    border-color: #9f9dc1; /* Border darkens on hover */
 }
 
 .product-image {
@@ -663,5 +666,56 @@ hr {
 
 .notification.show {
     transform: translateX(0);
+}
+.button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+margin-left: 47px;
+gap: 5px;
+
+
+}
+
+
+/* Enhanced styling for the details button */
+.details-btn {
+    background-color: transparent;
+    border: none;
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+   
+}
+
+.details-btn:hover {
+    background-color: rgba(183, 181, 209, 0.2);
+    transform: rotate(90deg);
+}
+
+.details-btn:active {
+    background-color: rgba(183, 181, 209, 0.4);
+}
+
+.details-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s ease;
+}
+
+.details-btn:hover svg path {
+    fill: #9f9dc1;
+}
+
+/* Make sure product cards have position relative for absolute positioning of the button */
+.product-card {
+    position: relative;
 }
     
