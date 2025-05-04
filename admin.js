@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+    
+    if (!isLoggedIn) {
+        // Redirect to login page if not logged in
+        window.location.href = 'login.html';
+        return;
+    }
+    
     // Mobile menu toggle
     const mobileMenuToggle = document.createElement('button');
     mobileMenuToggle.className = 'mobile-menu-toggle';
@@ -87,7 +96,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.logout-btn').addEventListener('click', function(e) {
         e.preventDefault();
         if(confirm('Logout?')) {
-            alert('Logged out');
+            // Clear login state
+            localStorage.removeItem('adminLoggedIn');
+            // Redirect to login page
+            window.location.href = 'login.html';
         }
     });
 

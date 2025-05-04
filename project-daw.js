@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (buyButton) {
         buyButton.addEventListener("click", () => {
-            if (cartTotal !== 0) {
+            if (Object.keys(cartItems).length > 0) {
                 // Check if we're in a subdirectory
                 const path = window.location.pathname;
                 if (path.includes('/men/') || path.includes('/women/') || path.includes('/children/')) {
@@ -209,9 +209,9 @@ function setupCartItemEventListeners() {
             const cartBox = e.target.closest('.cart-box');
             const itemId = parseInt(cartBox.dataset.id);
             cartItems[itemId].quantity += 1;
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
             updateCartDisplay();
         });
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));
     });
 
     // زر تقليل الكمية أو الحذف إذا وصلت الكمية لـ 1
@@ -224,6 +224,7 @@ function setupCartItemEventListeners() {
             } else {
                 delete cartItems[itemId];
             }
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
             updateCartDisplay();
         });
     });
@@ -234,6 +235,7 @@ function setupCartItemEventListeners() {
             const cartBox = e.target.closest('.cart-box');
             const itemId = parseInt(cartBox.dataset.id);
             delete cartItems[itemId];
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
             updateCartDisplay();
         });
     });
@@ -242,31 +244,6 @@ function setupCartItemEventListeners() {
 // استدعاء أولي لتحديث عرض السلة عند تحميل الصفحة
 updateCartDisplay();
 
-// Add this function to create and show the notification
-function showNotification(message) {
-    // Remove any existing notification
-    const existingNotification = document.querySelector('.notification');
-    if (existingNotification) {
-        existingNotification.remove();
-    }
-    
-    // Create new notification
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    
-    // Show the notification
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 10);
-    
-    // Hide and remove after 3 seconds
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-            notification.remove();
-        }, 200);
-    }, 2000);
-}
+// Remove duplicate showNotification function
+// The function is already defined earlier in the file
 
