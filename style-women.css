@@ -611,3 +611,54 @@ right: 130px;
   .notification.show {
     transform: translateX(0);
   }
+  .button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+  margin-left: 47px;
+  gap: 5px;
+  
+  
+  }
+  
+  
+  /* Enhanced styling for the details button */
+  .details-btn {
+    background-color: transparent;
+    border: none;
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  
+   
+  }
+  
+  .details-btn:hover {
+    background-color: rgba(183, 181, 209, 0.2);
+    transform: rotate(90deg);
+  }
+  
+  .details-btn:active {
+    background-color: rgba(183, 181, 209, 0.4);
+  }
+  
+  .details-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .details-btn:hover svg path {
+    fill: #9f9dc1;
+  }
+  
+  /* Make sure product cards have position relative for absolute positioning of the button */
+  .product-card {
+    position: relative;
+  }
