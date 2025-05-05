@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'login.html';
         return;
     }
-    
     // Mobile menu toggle
     const mobileMenuToggle = document.createElement('button');
     mobileMenuToggle.className = 'mobile-menu-toggle';
@@ -26,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new Chart(salesCtx, {
         type: 'line',
         data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
             datasets: [{
                 label: 'Sales',
                 data: [12000, 19000, 15000, 22000, 20000, 25000],
@@ -91,17 +90,17 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.notifications').addEventListener('click', function() {
         alert('You have new notifications');
     });
+// Simple logout
+document.querySelector('.logout-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    if(confirm('Logout?')) { // Asks for confirmation
+        // Clear login state (optional, depends if main.html uses this flag)
+        localStorage.removeItem('adminLoggedIn');
 
-    // Simple logout
-    document.querySelector('.logout-btn').addEventListener('click', function(e) {
-        e.preventDefault();
-        if(confirm('Logout?')) {
-            // Clear login state
-            localStorage.removeItem('adminLoggedIn');
-            // Redirect to login page
-            window.location.href = 'login.html';
-        }
-    });
+        // Redirect to MAIN page  <--- CHANGED HERE
+        window.location.href = 'main.html';
+    }
+});
 
     // Section navigation
     document.querySelectorAll('.sidebar-menu li a').forEach(link => {

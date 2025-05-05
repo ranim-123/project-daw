@@ -354,9 +354,13 @@ right: 130px;
         align-items: center;
         gap: 1.5rem;
         margin-bottom: 20px;
-        border: solid 2px #b7b5d1;
-        border-radius: 0.5rem;
+        border: 1px solid rgba(183, 181, 209, 0.5); /* Changed from solid 2px #b7b5d1 to a thinner, semi-transparent border */
+        border-radius: 10px; /* Changed from 0.5rem */
         box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-card:hover {
+        border-color: #9f9dc1; /* Border darkens on hover */
     }
     
     .product-image {
