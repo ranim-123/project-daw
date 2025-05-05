@@ -206,9 +206,62 @@
             // Handle form submission
             document.querySelector('.payment-form').addEventListener('submit', function(e) {
                 e.preventDefault();
+                
+                // Get cart items and form data
+                const cartItems = JSON.parse(localStorage.getItem('cartItems')) || {};
+                
+                // Check if cart is empty
+                if (Object.keys(cartItems).length === 0) {
+                    alert('Your cart is empty. Please add items before checkout.');
+                    return;
+                }
+                
+                // Get form values
+                const cardholder = document.getElementById('cardholder').value;
+                const address = document.getElementById('address').value;
+                const city = document.getElementById('city').value;
+                const country = document.getElementById('country').value;
+                const paymentMethod = document.querySelector('.payment-method.active')?.getAttribute('data-method') || 'card';
+                
+                // Calculate totals
+                const subtotal = Object.values(cartItems).reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const shipping = 5.00;
+                const tax = subtotal * 0.1; // 10% tax
+                const total = subtotal + shipping + tax;
+                
+                // Create order object
+                const order = {
+                    id: 'ORD-' + Math.floor(Math.random() * 10000).toString().padStart(4, '0'),
+                    customer: cardholder,
+                    email: 'customer@example.com', // You could add an email field to the form
+                    address: `${address}, ${city}, ${country}`,
+                    items: Object.values(cartItems),
+                    date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+                    subtotal: subtotal.toFixed(2),
+                    shipping: shipping.toFixed(2),
+                    tax: tax.toFixed(2),
+                    total: total.toFixed(2),
+                    paymentMethod: paymentMethod,
+                    status: 'Pending'
+                };
+                
+                // Get existing orders or initialize empty array
+                const orders = JSON.parse(localStorage.getItem('adminOrders')) || [];
+                
+                // Add new order to beginning of array
+                orders.unshift(order);
+                
+                // Save updated orders
+                localStorage.setItem('adminOrders', JSON.stringify(orders));
+                
+                // Show confirmation
                 alert('Thank you for your purchase! Your order has been placed.');
-                localStorage.removeItem('cartItems'); // Clear cart
-                window.location.href = 'main.html'; // Redirect to home page
+                
+                // Clear cart
+                localStorage.removeItem('cartItems');
+                
+                // Redirect to home page
+                window.location.href = 'main.html';
             });
         });
     </script>

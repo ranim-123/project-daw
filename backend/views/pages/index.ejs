@@ -4,14 +4,104 @@
     <%- include('../partials/head'); %>
 </head>
 <body>
-    <header>
-        <%- include('../partials/header'); %>
-    </header>
-    <% for( let index = 0; index < mascots.length; index++ ) { %>
-        <h1><%= mascots[index].name %></h1>
-    <% } %>
-    <footer>
-        <%- include('../partials/footer'); %>
-    </footer>
+    <%- include('../partials/header'); %>
+    
+    <section class="main">
+        <div class="main-content">
+           <div class="main-image">
+               <img src="images/shoe1-2.jpg" alt="">
+               <div class="main-texte">
+                   <h1>We Help You <br> to Find Your <br> Style</h1>
+                   <p>A fashion store offering stylish clothing and accessories for all occasions. We provide high-quality fabrics and modern designs to suit every taste. Find the perfect outfit, whether for formal events or everyday wear.</p>
+               </div>
+           </div>
+        </div>
+    </section>
+    
+    <section class="More-views">
+        <div class="views-content">
+            <div class="views-card">
+                <img src="images/apparel1.jpg" alt="">
+                <a href="/men"><button>Men</button></a>
+            </div>
+        </div>
+        <div class="views-content">
+            <div class="views-card">
+                <img src="images/apparel3.jpg" alt="">
+                <a href="/women"><button>Women</button></a>
+            </div>
+        </div>
+        <div class="views-content">
+            <div class="views-card">
+                <img src="images/child.jpg" alt="">
+                <a href="/children"><button>Children</button></a>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/cart'); %>
+    
+    <section class="Product" id="Product">
+        <div class="title"><h3>Our Collection</h3></div>
+        <div class="title-product">
+            <h2>Shoes</h2>
+        </div>
+        <div class="Product-content">
+            <% products.shoes.forEach(product => { %>
+                <div class="product-card">
+                    <img class="product-image" src="<%= product.image %>" alt="<%= product.name %>">
+                    <div class="product-info">
+                        <h1 style="text-align: center;padding-left: 8px;"><%= product.name %></h1>
+                        <h3 style="font-size: small; font-weight: 300; text-align: center; padding-left: 9px;"><%= product.description %></h3>
+                        <p style="font-size: x-large; font-weight: 700; text-align: center;">$<%= product.price.toFixed(2) %></p>
+                    </div>
+                    <button class="product-btn" data-id="<%= product.id %>">Add to cart</button>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+    
+    <section class="t-shirt">
+        <div class="title-product">
+            <h2>T-Shirt</h2>
+        </div>
+        <div class="Product-content">
+            <% products.tshirts.forEach(product => { %>
+                <div class="product-card">
+                    <img class="product-image" src="<%= product.image %>" alt="<%= product.name %>">
+                    <div class="product-info">
+                        <h1 class="product-card-h1"><%= product.name %></h1>
+                        <h3 style="font-size: small; font-weight: 300;"><%= product.description %></h3>
+                        <p style="font-size: x-large; font-weight: 700; text-align: center;">$<%= product.price.toFixed(2) %></p>
+                    </div>
+                    <button class="product-btn" data-id="<%= product.id %>">Add to cart</button>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+    
+    <section class="drass">
+        <div class="title-product">
+            <h2>Dress</h2>
+        </div>
+        <div class="Product-content">
+            <% products.dresses.forEach(product => { %>
+                <div class="product-card">
+                    <img class="product-image" src="<%= product.image %>" alt="<%= product.name %>">
+                    <div class="product-info">
+                        <h1 class="product-card-h1"><%= product.name %></h1>
+                        <h3 style="font-size: small; font-weight: 300;"><%= product.description %></h3>
+                        <p style="font-size: x-large; font-weight: 700; text-align: center;">$<%= product.price.toFixed(2) %></p>
+                    </div>
+                    <button class="product-btn" data-id="<%= product.id %>">Add to cart</button>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+    
+    <%- include('../partials/footer'); %>
+    
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
 </body>
 </html>
