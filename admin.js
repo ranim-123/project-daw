@@ -331,14 +331,20 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
             // Add event listeners to new buttons
             const editBtn = newRow.querySelector('.btn-action.edit');
             const deleteBtn = newRow.querySelector('.btn-action.delete');
-            
+
             editBtn.addEventListener('click', function() {
                 const row = this.closest('tr');
                 const productId = row.querySelector('td:first-child').textContent;
-                alert(`Edit product ${productId}`);
-                // Here you would open a modal with a form to edit the product
+                const productName = row.querySelector('td:nth-child(3)').textContent;
+                const productCategory = row.querySelector('td:nth-child(4)').textContent;
+                const productPrice = parseFloat(row.querySelector('td:nth-child(5)').textContent.replace('$', ''));
+                const productStock = parseInt(row.querySelector('td:nth-child(6)').textContent);
+                const productImage = row.querySelector('img').src;
+                
+                // Create and show edit modal (same as the edit functionality above)
+                showEditProductModal(row, productId, productName, productCategory, productPrice, productStock, productImage);
             });
-            
+
             deleteBtn.addEventListener('click', function() {
                 const row = this.closest('tr');
                 const productId = row.querySelector('td:first-child').textContent;
@@ -371,6 +377,178 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                     notification.remove();
                 }, 300);
             }, 3000);
+        }
+        
+        // Function to show edit product modal
+        function showEditProductModal(row, productId, productName, productCategory, productPrice, productStock, productImage) {
+            // Create modal for editing product
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Edit Product</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-product-form">
+                            <div class="form-group">
+                                <label for="product-name">Product Name</label>
+                                <input type="text" id="product-name" value="${productName}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-category">Category</label>
+                                <select id="product-category" required>
+                                    <option value="shoes" ${productCategory === 'Shoes' ? 'selected' : ''}>Shoes</option>
+                                    <option value="clothing" ${productCategory === 'Clothing' ? 'selected' : ''}>Clothing</option>
+                                    <option value="accessories" ${productCategory === 'Accessories' ? 'selected' : ''}>Accessories</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-price">Price ($)</label>
+                                <input type="number" id="product-price" step="0.01" min="0" value="${productPrice}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-stock">Stock Quantity</label>
+                                <input type="number" id="product-stock" min="0" value="${productStock}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-image">Current Image</label>
+                                <div class="current-image-preview">
+                                    <img src="${productImage}" alt="Product" style="max-width: 100px; display: block; margin-bottom: 10px;">
+                                </div>
+                                <input type="text" id="product-image" value="${productImage}" placeholder="image-daw/product.png">
+                            </div>
+                            <div class="form-group">
+                                <label>Upload New Image</label>
+                                <div class="file-upload">
+                                    <input type="file" id="image-upload" accept="image/*">
+                                    <label for="image-upload" class="file-upload-btn">Choose File</label>
+                                    <span class="file-name">No file chosen</span>
+                                </div>
+                                <div class="image-preview" style="margin-top: 10px;"></div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-cancel">Cancel</button>
+                                <button type="submit" class="btn-save">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            
+            // Add modal to the DOM
+            document.body.appendChild(modal);
+            
+            // Show modal
+            setTimeout(() => {
+                modal.style.display = 'block';
+                modal.classList.add('show');
+            }, 10);
+            
+            // Close modal when clicking on X
+            modal.querySelector('.close').addEventListener('click', () => {
+                closeModal(modal);
+            });
+            
+            // Close modal when clicking on Cancel
+            modal.querySelector('.btn-cancel').addEventListener('click', () => {
+                closeModal(modal);
+            });
+            
+            // Handle file upload
+            const fileUpload = modal.querySelector('#image-upload');
+            const fileName = modal.querySelector('.file-name');
+            const imagePreview = modal.querySelector('.image-preview');
+            const productImageInput = modal.querySelector('#product-image');
+            
+            fileUpload.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    fileName.textContent = this.files[0].name;
+                    
+                    // Preview image
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 100px; max-height: 100px;">`;
+                        
+                        // Update image path with filename
+                        productImageInput.value = `image-daw/${fileUpload.files[0].name}`;
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+            
+            // Handle form submission
+            const form = modal.querySelector('#edit-product-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const name = document.getElementById('product-name').value;
+                const category = document.getElementById('product-category').value;
+                const price = parseFloat(document.getElementById('product-price').value);
+                const stock = parseInt(document.getElementById('product-stock').value);
+                const imageUrl = document.getElementById('product-image').value;
+                
+                // Update row in table
+                row.querySelector('td:nth-child(3)').textContent = name;
+                row.querySelector('td:nth-child(4)').textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                row.querySelector('td:nth-child(5)').textContent = '$' + price.toFixed(2);
+                row.querySelector('td:nth-child(6)').textContent = stock;
+                
+                // Update image if changed
+                if (imageUrl && imageUrl !== productImage) {
+                    row.querySelector('img').src = imageUrl;
+                }
+                
+                // Update status based on stock
+                let status = 'In Stock';
+                let statusClass = 'completed';
+                
+                if (stock === 0) {
+                    status = 'Out of Stock';
+                    statusClass = 'cancelled';
+                } else if (stock < 15) {
+                    status = 'Low Stock';
+                    statusClass = 'pending';
+                }
+                
+                const statusSpan = row.querySelector('.status');
+                statusSpan.textContent = status;
+                statusSpan.className = 'status ' + statusClass;
+                
+                // Update in localStorage
+                updateProductInLocalStorage(productId, {
+                    id: productId,
+                    name: name,
+                    category: category,
+                    price: price,
+                    stock: stock,
+                    image: imageUrl
+                });
+                
+                // Close the modal
+                closeModal(modal);
+                
+                // Show success notification
+                showNotification('Product updated successfully!');
+            });
+        }
+
+        // Function to update product in localStorage
+        function updateProductInLocalStorage(productId, updatedProduct) {
+            let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+            
+            // Find and update the product
+            products = products.map(product => {
+                if (product.id === productId) {
+                    return updatedProduct;
+                }
+                return product;
+            });
+            
+            // Save back to localStorage
+            localStorage.setItem('adminProducts', JSON.stringify(products));
         }
     }
     
