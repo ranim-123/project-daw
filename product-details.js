@@ -13,7 +13,7 @@
             productName = productCard.querySelector('h1').textContent;
             productImage = productCard.querySelector('.product-image').src;
             productPrice = productCard.querySelector('p').textContent;
-            productDescription = productCard.querySelector('h3').textContent;
+            productDescription = productCard.querySelector('h3')?.textContent || 'No description available';
         } catch (error) {
             console.error('Error getting product details:', error);
             return;
@@ -101,6 +101,9 @@
             });
         });
         
+        // Set default active size
+        sizeButtons[1].classList.add('active'); // M is active by default
+        
         // Color selection
         const colorButtons = modal.querySelectorAll('.color');
         colorButtons.forEach(btn => {
@@ -111,6 +114,9 @@
                 btn.classList.add('active');
             });
         });
+        
+        // Set default active color
+        colorButtons[0].classList.add('active'); // First color is active by default
         
         // Quantity controls
         const minusBtn = modal.querySelector('.minus');
@@ -137,7 +143,7 @@
             const selectedSize = modal.querySelector('.size.active')?.textContent || 'M';
             const selectedColor = modal.querySelector('.color.active')?.style.backgroundColor || 'rgb(231, 76, 60)';
             
-            // Call the existing addToCart function with additional parameters
+            // Call the function to add to cart
             handleAddToCart(productId, quantity, selectedSize, selectedColor);
             
             // Close the modal
@@ -154,7 +160,7 @@
             const selectedSize = modal.querySelector('.size.active')?.textContent || 'M';
             const selectedColor = modal.querySelector('.color.active')?.style.backgroundColor || 'rgb(231, 76, 60)';
             
-            // Call the existing addToCart function with additional parameters
+            // Call the function to add to cart
             handleAddToCart(productId, quantity, selectedSize, selectedColor);
             
             // Close the modal
@@ -173,7 +179,8 @@
     // Function to handle adding to cart with additional parameters
     function handleAddToCart(productId, quantity, size, color) {
         // Find the product button by ID
-        const productCard = document.querySelector(`.product-btn[data-id="${productId}"]`)?.closest('.product-card');
+        const productBtn = document.querySelector(`.product-btn[data-id="${productId}"]`);
+        const productCard = productBtn?.closest('.product-card');
         
         if (!productCard) {
             console.error('Product not found');
@@ -185,93 +192,73 @@
         const productTitle = productCard.querySelector('h1').textContent;
         const productPrice = productCard.querySelector('p').textContent;
         
-        // Check if handleClick function exists (from project-daw.js)
-        if (typeof handleClick === 'function') {
-            // Call the existing handleClick function
-            handleClick(parseInt(productId));
-            
-            // Update the item in cartItems with additional parameters
-            if (window.cartItems && window.cartItems[productId]) {
-                window.cartItems[productId].size = size;
-                window.cartItems[productId].color = color;
-                window.cartItems[productId].quantity = quantity;
-                
-                // Update localStorage
-                localStorage.setItem("cartItems", JSON.stringify(window.cartItems));
-                
-                // Update cart display
-                if (typeof updateCartDisplay === 'function') {
-                    updateCartDisplay();
-                }
-            }
-        } else {
-            // If handleClick doesn't exist, implement our own cart functionality
-            let cartItems = JSON.parse(localStorage.getItem("cartItems")) || {};
-            
-            // Create or update cart item
-            cartItems[productId] = {
-                id: productId,
-                name: productTitle,
-                price: parseFloat(productPrice.replace(/[^0-9.-]+/g, "")),
-                image: productImg,
-                quantity: quantity,
-                size: size,
-                color: color
-            };
-            
-            // Save to localStorage
-            localStorage.setItem("cartItems", JSON.stringify(cartItems));
-            
-            // Update cart icon if it exists
-            const cartCount = document.querySelector('.cart-count');
-            if (cartCount) {
-                const itemCount = Object.keys(cartItems).length;
-                cartCount.textContent = itemCount;
-                cartCount.style.display = itemCount > 0 ? 'block' : 'none';
-            }
+        // Get existing cart items
+        let cartItems = JSON.parse(localStorage.getItem("cartItems")) || {};
+        
+        // Create or update cart item
+        cartItems[productId] = {
+            id: productId,
+            itemName: productTitle,
+            imagePic: productImg,
+            price: parseFloat(productPrice.replace(/[^0-9.-]+/g, "")),
+            quantity: quantity,
+            size: size,
+            color: color
+        };
+        
+        // Save to localStorage
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+        
+        // Update cart count display
+        const cartCount = document.querySelector('.besket-shopping span');
+        if (cartCount) {
+            const itemCount = Object.keys(cartItems).length;
+            cartCount.textContent = itemCount;
+            cartCount.style.display = itemCount > 0 ? 'block' : 'none';
         }
         
-        // Handle redirect to payment page based on current path
-        const buyNowRedirect = () => {
-            const path = window.location.pathname;
-            if (path.includes('/men/') || path.includes('/women/') || path.includes('/children/')) {
-                return "../pay-page.html";
-            } else {
-                return "pay-page.html";
-            }
-        };
+        // Update cart display if function exists
+        if (typeof updateCartDisplay === 'function') {
+            updateCartDisplay();
+        }
+        
+        // Trigger click on the actual add to cart button to ensure any other event handlers run
+        if (productBtn && typeof productBtn.click === 'function') {
+            // We'll use a custom event to avoid infinite loops
+            const customEvent = new CustomEvent('addToCartFromModal', { 
+                bubbles: true,
+                detail: { quantity, size, color }
+            });
+            productBtn.dispatchEvent(customEvent);
+        }
     }
     
     // Function to show notification
     function showNotification(message) {
-        // Check if notification function exists in project-daw.js
-        if (typeof window.showNotification === 'function') {
-            window.showNotification(message);
-        } else {
-            // Create our own notification
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = message;
-            
-            // Style the notification
-            notification.style.position = 'fixed';
-            notification.style.top = '20px';
-            notification.style.right = '20px';
-            notification.style.backgroundColor = '#4CAF50';
-            notification.style.color = 'white';
-            notification.style.padding = '15px';
-            notification.style.borderRadius = '5px';
-            notification.style.zIndex = '1000';
-            notification.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
-            
-            // Add to DOM
-            document.body.appendChild(notification);
-            
-            // Remove after 3 seconds
+        // Remove any existing notification
+        const existingNotification = document.querySelector('.notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
+        
+        // Create new notification
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        // Show the notification
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+        
+        // Hide and remove after 3 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
             setTimeout(() => {
                 notification.remove();
-            }, 3000);
-        }
+            }, 200);
+        }, 2000);
     }
 // Product details functionality for all pages
 document.addEventListener('DOMContentLoaded', function() {
@@ -324,3 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 });
+
+
+
+
