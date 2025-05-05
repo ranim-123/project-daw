@@ -1,4 +1,4 @@
-// Product database - this would normally come from a backend API
+// قاعدة بيانات المنتجات - عادة ما تأتي من واجهة برمجة تطبيقات خلفية
 const products = [
     {
         id: 1,
@@ -98,57 +98,58 @@ const products = [
     }
 ];
 
-// Initialize search functionality when the DOM is loaded
+// تهيئة وظيفة البحث عند تحميل DOM
 document.addEventListener('DOMContentLoaded', function() {
     const searchForm = document.getElementById('search-form');
     const searchInput = document.getElementById('search-input');
     
     if (searchForm) {
         searchForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const searchTerm = searchInput.value.trim().toLowerCase();
+            e.preventDefault(); // منع السلوك الافتراضي للنموذج
+            const searchTerm = searchInput.value.trim().toLowerCase(); // تنظيف وتحويل مصطلح البحث إلى أحرف صغيرة
             
             if (searchTerm.length > 0) {
-                // Save search term to session storage
+                // حفظ مصطلح البحث في تخزين الجلسة
                 sessionStorage.setItem('searchTerm', searchTerm);
                 
-                // Redirect to search results page
+                // إعادة التوجيه إلى صفحة نتائج البحث
                 window.location.href = 'search-results.html';
             }
         });
     }
     
-    // Check if we're on the search results page
+    // التحقق مما إذا كنا في صفحة نتائج البحث
     if (window.location.pathname.includes('search-results.html')) {
         displaySearchResults();
     }
 });
 
-// Function to display search results
+// دالة لعرض نتائج البحث
 function displaySearchResults() {
-    const searchTerm = sessionStorage.getItem('searchTerm') || '';
+    const searchTerm = sessionStorage.getItem('searchTerm') || ''; // الحصول على مصطلح البحث من تخزين الجلسة
     const resultsContainer = document.getElementById('search-results');
     const searchTermDisplay = document.getElementById('search-term');
     
+    // عرض مصطلح البحث في الصفحة
     if (searchTermDisplay) {
         searchTermDisplay.textContent = searchTerm;
     }
     
-    if (!resultsContainer) return;
+    if (!resultsContainer) return; // التأكد من وجود حاوية النتائج
     
-    // Filter products based on search term
+    // تصفية المنتجات بناءً على مصطلح البحث
     const filteredProducts = products.filter(product => {
         return product.name.toLowerCase().includes(searchTerm) || 
                product.description.toLowerCase().includes(searchTerm) ||
                product.category.toLowerCase().includes(searchTerm);
     });
     
-    // Display results
+    // عرض النتائج
     if (filteredProducts.length > 0) {
-        // Clear previous results
+        // مسح النتائج السابقة
         resultsContainer.innerHTML = '';
         
-        // Create HTML for each product
+        // إنشاء HTML لكل منتج
         filteredProducts.forEach(product => {
             const productCard = document.createElement('div');
             productCard.className = 'product-card';
@@ -162,15 +163,15 @@ function displaySearchResults() {
                 <div class="button">
                     <button class="product-btn" data-id="${product.id}">Add to cart</button>
                     <button class="details-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 20C11.4696 20 10.9609 19.7893 10.5858 19.4142C10.2107 19.0391 10 18.5304 10 18C10 17.4696 10.2107 16.9609 10.5858 16.5858C10.9609 16.2107 11.4696 16 12 16C12.5304 16 13.0391 16.2107 13.4142 16.5858C13.7893 16.9609 14 17.4696 14 18C14 18.5304 13.7893 19.0391 13.4142 19.4142C13.0391 19.7893 12.5304 20 12 20ZM12 14C11.4696 14 10.9609 13.7893 10.5858 13.4142C10.2107 13.0391 10 12.5304 10 12C10 11.4696 10.2107 10.9609 10.5858 10.5858C10.9609 10.2107 11.4696 10 12 10C12.5304 10 13.0391 10.2107 13.4142 10.5858C13.7893 10.9609 14 11.4696 14 12C14 12.5304 13.7893 13.0391 13.4142 13.4142C13.0391 13.7893 12.5304 14 12 14ZM12 8C11.4696 8 10.9609 7.78929 10.5858 7.41421C10.2107 7.03914 10 6.53043 10 6C10 5.46957 10.2107 4.96086 10.5858 4.58579C10.9609 4.21071 11.4696 4 12 4C12.5304 4 13.0391 4.21071 13.4142 4.58579C13.7893 4.96086 14 5.46957 14 6C14 6.53043 13.7893 7.03914 13.4142 7.41421C13.0391 7.78929 12.5304 8 12 8Z" fill="black"/>
+                    <!-- رمز SVG للزر -->
                     </svg></button>
                 </div>
             `;
             
-            // Add the product card to the results container
+            // إضافة بطاقة المنتج إلى حاوية النتائج
             resultsContainer.appendChild(productCard);
             
-            // Add event listener to the "Add to cart" button
+            // إضافة مستمع حدث لزر "إضافة إلى السلة"
             const addToCartBtn = productCard.querySelector('.product-btn');
             addToCartBtn.addEventListener('click', function() {
                 const productId = parseInt(this.getAttribute('data-id'));
@@ -178,6 +179,7 @@ function displaySearchResults() {
             });
         });
     } else {
+        // عرض رسالة عندما لا توجد نتائج
         resultsContainer.innerHTML = `
             <div class="no-results">
                 <h2>No products found matching "${searchTerm}"</h2>
@@ -189,19 +191,21 @@ function displaySearchResults() {
 
 
 
-// Function to add product to cart
+// دالة لإضافة منتج إلى سلة التسوق
 function addToCart(productId) {
-    const product = products.find(p => p.id === productId);
+    const product = products.find(p => p.id === productId); // البحث عن المنتج بواسطة المعرف
     if (!product) return;
     
-    // Get existing cart items from localStorage
+    // الحصول على عناصر سلة التسوق الموجودة من التخزين المحلي
     let cartItems = JSON.parse(localStorage.getItem('cartItems')) || {};
     
-    // Add or update item in cart
+    // إضافة أو تحديث العنصر في السلة
     if (cartItems[productId]) {
+        // إذا كان المنتج موجودًا بالفعل، زيادة الكمية
         cartItems[productId].quantity += 1;
         showNotification(`Added another ${product.name} to cart!`);
     } else {
+        // إذا كان منتجًا جديدًا، إضافته إلى السلة
         cartItems[productId] = {
             id: product.id,
             itemName: product.name,
@@ -212,23 +216,24 @@ function addToCart(productId) {
         showNotification(`${product.name} added to cart!`);
     }
     
-    // Save updated cart to localStorage
+    // حفظ السلة المحدثة في التخزين المحلي
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
     
-    // Update cart display
+    // تحديث عرض السلة
     updateCartDisplay();
 }
 
-// Function to update cart display
+// دالة لتحديث عرض سلة التسوق
 function updateCartDisplay() {
     let cartItems = JSON.parse(localStorage.getItem('cartItems')) || {};
     let htmlDom = ``;
     const cartItemsLengthSpan = document.querySelector(".besket-shopping span");
     const cartContent = document.querySelector(".cart-content");
     
-    if (!cartContent) return;
+    if (!cartContent) return; // التأكد من وجود عنصر محتوى السلة
     
     if (Object.keys(cartItems).length > 0) {
+        // إنشاء HTML لكل عنصر في السلة
         Object.values(cartItems).forEach((item) => {
             htmlDom += `
                 <div class="cart-box" data-id="${item.id}">
@@ -247,28 +252,31 @@ function updateCartDisplay() {
             `;
         });
         
-        // Calculate total items
+        // حساب إجمالي العناصر
         const cartLength = Object.values(cartItems)
             .reduce((total, item) => total + item.quantity, 0);
             
+        // تحديث عدد العناصر في أيقونة السلة
         if (cartItemsLengthSpan) {
             cartItemsLengthSpan.textContent = cartLength;
         }
         
+        // مسح رسالة الخطأ إذا كانت موجودة
         document.querySelector(".error-cart").innerHTML = "";
     } else {
+        // إذا كانت السلة فارغة، تعيين العدد إلى صفر
         if (cartItemsLengthSpan) {
             cartItemsLengthSpan.textContent = "0";
         }
     }
     
-    // Update cart content
+    // تحديث محتوى السلة
     cartContent.innerHTML = htmlDom;
     
-    // Setup event listeners for cart items
+    // إعداد مستمعات الأحداث لعناصر السلة
     setupCartItemEventListeners();
     
-    // Update total price
+    // تحديث السعر الإجمالي
     const cartTotal = Math.ceil(Object.values(cartItems)
         .reduce((acc, item) => acc + (item.price * item.quantity), 0));
     const cartTotalElement = document.querySelector(".total-price");
@@ -277,9 +285,9 @@ function updateCartDisplay() {
     }
 }
 
-// Setup cart item event listeners
+// إعداد مستمعات أحداث عناصر السلة
 function setupCartItemEventListeners() {
-    // Increment quantity
+    // زيادة الكمية
     document.querySelectorAll('.increment').forEach(button => {
         button.addEventListener('click', (e) => {
             const cartBox = e.target.closest('.cart-box');
@@ -291,15 +299,17 @@ function setupCartItemEventListeners() {
         });
     });
 
-    // Decrement quantity
+    // تقليل الكمية
     document.querySelectorAll('.decrement').forEach(button => {
         button.addEventListener('click', (e) => {
             const cartBox = e.target.closest('.cart-box');
             const itemId = parseInt(cartBox.dataset.id);
             let cartItems = JSON.parse(localStorage.getItem('cartItems')) || {};
             if (cartItems[itemId].quantity > 1) {
+                // إذا كانت الكمية أكبر من 1، تقليلها
                 cartItems[itemId].quantity -= 1;
             } else {
+                // إذا كانت الكمية 1، إزالة العنصر من السلة
                 delete cartItems[itemId];
             }
             localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -307,7 +317,7 @@ function setupCartItemEventListeners() {
         });
     });
 
-    // Remove item
+    // إزالة العنصر
     document.querySelectorAll('.cart-remove').forEach(button => {
         button.addEventListener('click', (e) => {
             const cartBox = e.target.closest('.cart-box');
@@ -320,26 +330,26 @@ function setupCartItemEventListeners() {
     });
 }
 
-// Add notification function
+// دالة لعرض الإشعارات
 function showNotification(message) {
-    // Remove any existing notification
+    // إزالة أي إشعار موجود
     const existingNotification = document.querySelector('.notification');
     if (existingNotification) {
         existingNotification.remove();
     }
     
-    // Create new notification
+    // إنشاء إشعار جديد
     const notification = document.createElement('div');
     notification.className = 'notification';
     notification.textContent = message;
     document.body.appendChild(notification);
     
-    // Show the notification
+    // إظهار الإشعار
     setTimeout(() => {
         notification.classList.add('show');
     }, 10);
     
-    // Hide and remove after 3 seconds
+    // إخفاء وإزالة بعد ثانيتين
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
@@ -348,7 +358,21 @@ function showNotification(message) {
     }, 2000);
 }
 
-// Update cart count on page load
+// تحديث عدد عناصر السلة عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', updateCartCount);
 
+// دالة لتحديث عدد عناصر السلة
+function updateCartCount() {
+    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || {};
+    const cartItemsLengthSpan = document.querySelector(".besket-shopping span");
+    
+    if (cartItemsLengthSpan) {
+        // حساب إجمالي العناصر في السلة
+        const cartLength = Object.values(cartItems)
+            .reduce((total, item) => total + item.quantity, 0);
+        
+        // تحديث النص
+        cartItemsLengthSpan.textContent = cartLength;
+    }
+}
 

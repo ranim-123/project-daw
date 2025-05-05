@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if user is logged in
+    // التحقق مما إذا كان المستخدم مسجل الدخول
     const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
     
     if (!isLoggedIn) {
-        // Redirect to login page if not logged in
+        // إعادة التوجيه إلى صفحة تسجيل الدخول إذا لم يكن المستخدم مسجلاً
         window.location.href = 'login.html';
         return;
     }
-    // Mobile menu toggle
+    // زر تبديل القائمة للجوال
     const mobileMenuToggle = document.createElement('button');
     mobileMenuToggle.className = 'mobile-menu-toggle';
     mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.sidebar').classList.toggle('active');
     });
 
-    // Initialize simple charts
+    // تهيئة الرسوم البيانية البسيطة
     const salesCtx = document.getElementById('salesChart').getContext('2d');
     const trafficCtx = document.getElementById('trafficChart').getContext('2d');
     
-    // Simplified Sales Chart
+    // رسم بياني مبسط للمبيعات
     new Chart(salesCtx, {
         type: 'line',
         data: {
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Simplified Traffic Chart
+    // رسم بياني مبسط لحركة المرور
     new Chart(trafficCtx, {
         type: 'doughnut',
         data: {
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Simple sidebar menu toggle
+    // تبديل قائمة الشريط الجانبي البسيط
     document.querySelectorAll('.sidebar-menu li').forEach(item => {
         item.addEventListener('click', function(e) {
             e.preventDefault();
@@ -86,34 +86,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Simple notification
+    // إشعار بسيط
     document.querySelector('.notifications').addEventListener('click', function() {
         alert('You have new notifications');
     });
-// Simple logout
-document.querySelector('.logout-btn').addEventListener('click', function(e) {
-    e.preventDefault();
-    if(confirm('Logout?')) { // Asks for confirmation
-        // Clear login state (optional, depends if main.html uses this flag)
-        localStorage.removeItem('adminLoggedIn');
+    
+    // تسجيل الخروج البسيط
+    document.querySelector('.logout-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        if(confirm('Logout?')) { // يطلب التأكيد
+            // مسح حالة تسجيل الدخول (اختياري، يعتمد على ما إذا كانت main.html تستخدم هذه العلامة)
+            localStorage.removeItem('adminLoggedIn');
 
-        // Redirect to MAIN page  <--- CHANGED HERE
-        window.location.href = 'main.html';
-    }
-});
+            // إعادة التوجيه إلى الصفحة الرئيسية
+            window.location.href = 'main.html';
+        }
+    });
 
-    // Section navigation
+    // التنقل بين الأقسام
     document.querySelectorAll('.sidebar-menu li a').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             
-            // Update active menu item
+            // تحديث عنصر القائمة النشط
             document.querySelectorAll('.sidebar-menu li').forEach(item => {
                 item.classList.remove('active');
             });
             this.parentElement.classList.add('active');
             
-            // Show the corresponding section
+            // إظهار القسم المقابل
             const targetSection = this.getAttribute('data-section');
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.remove('active');
@@ -122,11 +123,11 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
         });
     });
 
-    // Product management
+    // إدارة المنتجات
     if (document.querySelector('.products-table')) {
-        // Add new product
+        // إضافة منتج جديد
         document.querySelector('.btn-add').addEventListener('click', function() {
-            // Create modal for adding new product
+            // إنشاء نافذة منبثقة لإضافة منتج جديد
             const modal = document.createElement('div');
             modal.className = 'modal';
             modal.innerHTML = `
@@ -183,33 +184,33 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                 </div>
             `;
             
-            // Add modal to the DOM
+            // إضافة النافذة المنبثقة إلى DOM
             document.body.appendChild(modal);
             
-            // Show modal
+            // إظهار النافذة المنبثقة
             setTimeout(() => {
                 modal.style.display = 'block';
                 modal.classList.add('show');
             }, 10);
             
-            // Close modal when clicking on X
+            // إغلاق النافذة المنبثقة عند النقر على X
             modal.querySelector('.close').addEventListener('click', () => {
                 closeModal(modal);
             });
             
-            // Close modal when clicking on Cancel
+            // إغلاق النافذة المنبثقة عند النقر على زر الإلغاء
             modal.querySelector('.btn-cancel').addEventListener('click', () => {
                 closeModal(modal);
             });
             
-            // Close modal when clicking outside
+            // إغلاق النافذة المنبثقة عند النقر خارجها
             window.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     closeModal(modal);
                 }
             });
             
-            // Handle file upload
+            // معالجة تحميل الملفات
             const fileUpload = modal.querySelector('#image-upload');
             const fileName = modal.querySelector('.file-name');
             
@@ -217,10 +218,10 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                 if (this.files && this.files[0]) {
                     fileName.textContent = this.files[0].name;
                     
-                    // Preview image (optional)
+                    // معاينة الصورة (اختياري)
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        // If you want to show a preview
+                        // إذا كنت ترغب في عرض معاينة
                         // const preview = document.createElement('img');
                         // preview.src = e.target.result;
                         // preview.style.maxWidth = '100%';
@@ -231,12 +232,12 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                 }
             });
             
-            // Handle form submission
+            // معالجة تقديم النموذج
             const form = modal.querySelector('#add-product-form');
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                // Get form values
+                // الحصول على قيم النموذج
                 const name = document.getElementById('product-name').value;
                 const category = document.getElementById('product-category').value;
                 const price = parseFloat(document.getElementById('product-price').value);
@@ -244,7 +245,7 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                 const description = document.getElementById('product-description').value;
                 const imageUrl = document.getElementById('product-image').value || 'image-daw/placeholder.png';
                 
-                // Create new product object
+                // إنشاء كائن المنتج الجديد
                 const newProduct = {
                     id: generateProductId(),
                     name: name,
@@ -255,19 +256,19 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                     image: imageUrl
                 };
                 
-                // In a real application, you would send this to your backend API
-                // For now, we'll just add it to the table
+                // في تطبيق حقيقي، سترسل هذا إلى واجهة برمجة التطبيقات الخلفية
+                // في الوقت الحالي، سنضيفه فقط إلى الجدول
                 addProductToTable(newProduct);
                 
-                // Close the modal
+                // إغلاق النافذة المنبثقة
                 closeModal(modal);
                 
-                // Show success notification
+                // عرض إشعار نجاح
                 showNotification('Product added successfully!');
             });
         });
         
-        // Function to close modal
+        // دالة لإغلاق النافذة المنبثقة
         function closeModal(modal) {
             modal.classList.remove('show');
             setTimeout(() => {
@@ -275,9 +276,9 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
             }, 300);
         }
         
-        // Function to generate a product ID
+        // دالة لإنشاء معرف منتج
         function generateProductId() {
-            // Get the highest product ID from the table
+            // الحصول على أعلى معرف منتج من الجدول
             const productRows = document.querySelectorAll('.products-table tbody tr');
             let highestId = 0;
             
@@ -289,17 +290,17 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                 }
             });
             
-            // Return the next ID
+            // إرجاع المعرف التالي
             const nextId = highestId + 1;
             return `#PRD-${nextId.toString().padStart(3, '0')}`;
         }
         
-        // Function to add product to table
+        // دالة لإضافة منتج إلى الجدول
         function addProductToTable(product) {
             const tableBody = document.querySelector('.products-table tbody');
             const newRow = document.createElement('tr');
             
-            // Determine status based on stock
+            // تحديد الحالة بناءً على المخزون
             let status = 'In Stock';
             let statusClass = 'completed';
             
@@ -325,10 +326,10 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                 </td>
             `;
             
-            // Add to table
+            // إضافة إلى الجدول
             tableBody.appendChild(newRow);
             
-            // Add event listeners to new buttons
+            // إضافة مستمعي الأحداث للأزرار الجديدة
             const editBtn = newRow.querySelector('.btn-action.edit');
             const deleteBtn = newRow.querySelector('.btn-action.delete');
 
@@ -341,7 +342,7 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                 const productStock = parseInt(row.querySelector('td:nth-child(6)').textContent);
                 const productImage = row.querySelector('img').src;
                 
-                // Create and show edit modal (same as the edit functionality above)
+                // إنشاء وعرض نافذة تعديل المنتج
                 showEditProductModal(row, productId, productName, productCategory, productPrice, productStock, productImage);
             });
 
@@ -350,27 +351,27 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                 const productId = row.querySelector('td:first-child').textContent;
                 if (confirm(`Are you sure you want to delete product ${productId}?`)) {
                     row.remove();
-                    // Here you would send an API request to delete the product
+                    // هنا سترسل طلب واجهة برمجة التطبيقات لحذف المنتج
                 }
             });
         }
         
-        // Function to show notification
+        // دالة لعرض الإشعارات
         function showNotification(message) {
-            // Create notification element
+            // إنشاء عنصر الإشعار
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.textContent = message;
             
-            // Add to DOM
+            // إضافة إلى DOM
             document.body.appendChild(notification);
             
-            // Show the notification
+            // عرض الإشعار
             setTimeout(() => {
                 notification.classList.add('show');
             }, 10);
             
-            // Hide and remove after 3 seconds
+            // إخفاء وإزالة بعد 3 ثوانٍ
             setTimeout(() => {
                 notification.classList.remove('show');
                 setTimeout(() => {
@@ -379,9 +380,9 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
             }, 3000);
         }
         
-        // Function to show edit product modal
+        // دالة لعرض نافذة تعديل المنتج
         function showEditProductModal(row, productId, productName, productCategory, productPrice, productStock, productImage) {
-            // Create modal for editing product
+            // إنشاء نافذة منبثقة لتعديل المنتج
             const modal = document.createElement('div');
             modal.className = 'modal';
             modal.innerHTML = `
@@ -437,26 +438,26 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                 </div>
             `;
             
-            // Add modal to the DOM
+            // إضافة النافذة المنبثقة إلى DOM
             document.body.appendChild(modal);
             
-            // Show modal
+            // عرض النافذة المنبثقة
             setTimeout(() => {
                 modal.style.display = 'block';
                 modal.classList.add('show');
             }, 10);
             
-            // Close modal when clicking on X
+            // إغلاق النافذة المنبثقة عند النقر على X
             modal.querySelector('.close').addEventListener('click', () => {
                 closeModal(modal);
             });
             
-            // Close modal when clicking on Cancel
+            // إغلاق النافذة المنبثقة عند النقر على زر الإلغاء
             modal.querySelector('.btn-cancel').addEventListener('click', () => {
                 closeModal(modal);
             });
             
-            // Handle file upload
+            // معالجة تحميل الملفات
             const fileUpload = modal.querySelector('#image-upload');
             const fileName = modal.querySelector('.file-name');
             const imagePreview = modal.querySelector('.image-preview');
@@ -466,42 +467,42 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                 if (this.files && this.files[0]) {
                     fileName.textContent = this.files[0].name;
                     
-                    // Preview image
+                    // معاينة الصورة
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 100px; max-height: 100px;">`;
                         
-                        // Update image path with filename
+                        // تحديث مسار الصورة
                         productImageInput.value = `image-daw/${fileUpload.files[0].name}`;
                     }
                     reader.readAsDataURL(this.files[0]);
                 }
             });
             
-            // Handle form submission
+            // معالجة تقديم النموذج
             const form = modal.querySelector('#edit-product-form');
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                // Get form values
+                // الحصول على قيم النموذج
                 const name = document.getElementById('product-name').value;
                 const category = document.getElementById('product-category').value;
                 const price = parseFloat(document.getElementById('product-price').value);
                 const stock = parseInt(document.getElementById('product-stock').value);
                 const imageUrl = document.getElementById('product-image').value;
                 
-                // Update row in table
+                // تحديث الصف في الجدول
                 row.querySelector('td:nth-child(3)').textContent = name;
                 row.querySelector('td:nth-child(4)').textContent = category.charAt(0).toUpperCase() + category.slice(1);
                 row.querySelector('td:nth-child(5)').textContent = '$' + price.toFixed(2);
                 row.querySelector('td:nth-child(6)').textContent = stock;
                 
-                // Update image if changed
+                // تحديث الصورة إذا تم تغييرها
                 if (imageUrl && imageUrl !== productImage) {
                     row.querySelector('img').src = imageUrl;
                 }
                 
-                // Update status based on stock
+                // تحديث الحالة بناءً على المخزون
                 let status = 'In Stock';
                 let statusClass = 'completed';
                 
@@ -517,7 +518,7 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                 statusSpan.textContent = status;
                 statusSpan.className = 'status ' + statusClass;
                 
-                // Update in localStorage
+                // تحديث في localStorage
                 updateProductInLocalStorage(productId, {
                     id: productId,
                     name: name,
@@ -527,19 +528,19 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                     image: imageUrl
                 });
                 
-                // Close the modal
+                // إغلاق النافذة المنبثقة
                 closeModal(modal);
                 
-                // Show success notification
+                // عرض إشعار نجاح
                 showNotification('Product updated successfully!');
             });
         }
 
-        // Function to update product in localStorage
+        // دالة لتحديث المنتج في localStorage
         function updateProductInLocalStorage(productId, updatedProduct) {
             let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
             
-            // Find and update the product
+            // البحث عن المنتج وإجراء التحديث
             products = products.map(product => {
                 if (product.id === productId) {
                     return updatedProduct;
@@ -547,46 +548,46 @@ document.querySelector('.logout-btn').addEventListener('click', function(e) {
                 return product;
             });
             
-            // Save back to localStorage
+            // حفظ التحديثات في localStorage
             localStorage.setItem('adminProducts', JSON.stringify(products));
         }
     }
     
-    // Order management
+    // إدارة الطلبات
     if (document.querySelector('.orders-table')) {
-        // View order details
+        // عرض تفاصيل الطلب
         document.querySelectorAll('.orders-table .btn-action.view').forEach(btn => {
             btn.addEventListener('click', function() {
                 const row = this.closest('tr');
                 const orderId = row.querySelector('td:first-child').textContent;
                 alert(`View order details for ${orderId}`);
-                // Here you would open a modal with order details
+                // هنا ستحتاج إلى فتح نافذة مع تفاصيل الطلب
             });
         });
         
-        // Print order
+        // طباعة الطلب
         document.querySelectorAll('.orders-table .btn-action.print').forEach(btn => {
             btn.addEventListener('click', function() {
                 const row = this.closest('tr');
                 const orderId = row.querySelector('td:first-child').textContent;
                 alert(`Print order ${orderId}`);
-                // Here you would trigger the print function
+                // هنا ستحتاج إلى تشغيل وظيفة الطباعة
             });
         });
         
-        // Cancel order
+        // إلغاء الطلب
         document.querySelectorAll('.orders-table .btn-action.cancel').forEach(btn => {
             btn.addEventListener('click', function() {
                 const row = this.closest('tr');
                 const orderId = row.querySelector('td:first-child').textContent;
                 if (confirm(`Are you sure you want to cancel order ${orderId}?`)) {
                     row.remove();
-                    // Here you would send an API request to cancel the order
+                    // هنا سترسل طلب واجهة برمجة التطبيقات لإلغاء الطلب
                 }
             });
         });
         
-        // Filter orders
+        // تصفية الطلبات
         document.querySelector('#order-status-filter').addEventListener('change', filterOrders);
         
         function filterOrders() {
